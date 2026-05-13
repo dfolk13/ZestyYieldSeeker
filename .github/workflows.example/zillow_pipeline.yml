@@ -1,0 +1,58 @@
+# .github/workflows/zillow_pipeline.yml
+name: Zillow daily pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # runs every day at 6am UTC
+  workflow_dispatch:       # allows manual trigger from GitHub UI
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+      SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+      SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+      RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+      ZILLOW_LOCATION: "new mexico"
+      ZILLOW_MAX_PAGES: "24"
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch Zillow data
+        run: python fetch_zillow.py .
+
+      - name: Load to Snowflake
+        run: python bulk_ingestion.py ./sale_data.json ./rent_data.json
+
+      - name: Write dbt profiles.yml
+        env:
+          DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
+        run: |
+          mkdir -p ~/.dbt
+          printf '%s' "$DBT_PROFILES_YML" > ~/.dbt/profiles.yml
+
+      - name: dbt source freshness
+        run: dbt source freshness --project-dir dbt_project
+
+      - name: dbt snapshot
+        run: dbt snapshot --project-dir dbt_project
+
+      - name: dbt run
+        run: dbt run --project-dir dbt_project
+
+      - name: dbt test
+        run: dbt test --project-dir dbt_project

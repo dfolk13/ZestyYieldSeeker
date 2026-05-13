@@ -24,8 +24,46 @@ FEEDS = {
  
 LOCATION = os.getenv("ZILLOW_LOCATION", "new mexico")
 MAX_PAGES = int(os.getenv("ZILLOW_MAX_PAGES", "24"))
+RETRY_ATTEMPTS = 3
+RETRY_DELAY = 10  # seconds between retries
  
- 
+def fetch_page(url, params, feed_name, page_num):
+    """Fetch a single page with retries on 5xx errors."""
+    for attempt in range(1, RETRY_ATTEMPTS + 1):
+        try:
+            response = requests.get(url, headers=HEADERS, params=params, timeout=30)
+
+            # Retry on server errors
+            if response.status_code >= 500:
+                logger.warning("%s feed page %d: server error %d, attempt %d/%d",
+                               feed_name, page_num, response.status_code, attempt, RETRY_ATTEMPTS)
+                if attempt < RETRY_ATTEMPTS:
+                    time.sleep(RETRY_DELAY)
+                    continue
+                else:
+                    logger.error("%s feed page %d: giving up after %d attempts",
+                                 feed_name, page_num, RETRY_ATTEMPTS)
+                    return None
+
+            response.raise_for_status()
+
+            if not response.text.strip():
+                logger.warning("%s feed page %d: empty response, stopping.", feed_name, page_num)
+                return None
+
+            return response.json()
+
+        except requests.exceptions.Timeout:
+            logger.warning("%s feed page %d: timeout, attempt %d/%d",
+                           feed_name, page_num, attempt, RETRY_ATTEMPTS)
+            if attempt < RETRY_ATTEMPTS:
+                time.sleep(RETRY_DELAY)
+            else:
+                return None
+
+    return None
+
+
 def fetch_feed(feed_name, url):
     """Fetch all pages for a single feed and return combined results."""
     combined = {}
@@ -36,15 +74,13 @@ def fetch_feed(feed_name, url):
             "sort": "relevant",
             "page": str(page_num)
         }
-        response = requests.get(url, headers=HEADERS, params=params)
-        response.raise_for_status()
 
-        # Handle empty response body — API sometimes returns nothing on rate limit
-        if not response.text.strip():
-            logger.warning("%s feed: empty response on page %d, stopping.", feed_name, page_num)
+        data = fetch_page(url, params, feed_name, page_num)
+
+        # None means the page failed or was empty — stop pagination
+        if data is None:
+            logger.info("%s feed: stopping at page %d.", feed_name, page_num)
             break
-
-        data = response.json()
 
         listings = data.get("data", {}).get("listings", [])
         if not listings:
@@ -58,35 +94,40 @@ def fetch_feed(feed_name, url):
 
         logger.info("%s feed: fetched page %d (%d listings so far)",
                     feed_name, page_num, len(combined["data"]["listings"]))
-        time.sleep(1)  # Sleep to respect API rate limits
+        time.sleep(1)
 
     total = len(combined.get("data", {}).get("listings", []))
     logger.info("%s feed complete: %d total listings", feed_name, total)
-    return combined
- 
- 
+    return combined, total
+
+
 def save_feed(data, output_path):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
     logger.info("Saved: %s", output_path)
- 
- 
+
+
 if __name__ == "__main__":
-    # Output directory can be overridden via CLI arg, defaults to bronze_layer/assets
     output_dir = sys.argv[1] if len(sys.argv) > 1 else "bronze_layer/assets"
- 
+
     failed = []
     for feed_name, url in FEEDS.items():
         try:
-            data = fetch_feed(feed_name, url)
-            save_feed(data, os.path.join(output_dir, f"{feed_name}_data.json"))
+            data, total = fetch_feed(feed_name, url)
+            if total == 0:
+                logger.error("%s feed: no listings fetched, skipping save.", feed_name)
+                failed.append(feed_name)
+            else:
+                save_feed(data, os.path.join(output_dir, f"{feed_name}_data.json"))
         except Exception as e:
             logger.error("Failed to fetch %s feed: %s", feed_name, e)
             failed.append(feed_name)
- 
+
     if failed:
         logger.error("The following feeds failed: %s", failed)
-        sys.exit(1)
- 
-    logger.info("All feeds fetched successfully.")
+        # Warn but don't exit with code 1 if at least one feed succeeded
+        if len(failed) == len(FEEDS):
+            sys.exit(1)  # all feeds failed — block the pipeline
+        else:
+            logger.warning("Partial success — continuing pipeline with available data.")

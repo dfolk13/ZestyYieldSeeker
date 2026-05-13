@@ -80,8 +80,8 @@ def load_file(conn, file_path):
 
 if __name__ == "__main__":
     files = sys.argv[1:] or [
-        "../bronze_layer/assets/sale_10Page_data.json",
-        "../bronze_layer/assets/rent_10Page_data.json",
+        "sale_data.json",
+        "rent_data.json",
     ]
 
     conn = get_connection()

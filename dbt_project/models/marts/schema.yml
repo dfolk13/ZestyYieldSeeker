@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: investment_yield
+    description: "Cap rate analysis joining for-sale listings with rent proxies."
+    columns:
+      - name: zpid
+        data_tests:
+          - not_null
+          - unique
+      - name: zipcode
+        data_tests:
+          - not_null
+      - name: purchase_price
+        data_tests:
+          - not_null
+      - name: cap_rate
+        data_tests:
+          - not_null

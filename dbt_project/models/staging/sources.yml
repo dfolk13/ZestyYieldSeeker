@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: raw_zillow
+    database: ZILLOW_YIELD_DB
+    schema: RAW_DATA
+    tables:
+      - name: RAW_LISTINGS_FOR_SALE
+        config:
+          loaded_at_field: ingested_at
+          freshness:
+            warn_after: {count: 24, period: hour}
+            error_after: {count: 48, period: hour}
+      - name: RAW_LISTINGS_FOR_RENT
+        config:
+          loaded_at_field: ingested_at
+          freshness:
+            warn_after: {count: 24, period: hour}
+            error_after: {count: 48, period: hour}

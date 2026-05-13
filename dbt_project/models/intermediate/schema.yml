@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: int_zillow_for_sale
+    description: "Cleaned and structured for-sale listings."
+    columns:
+      - name: status_type
+        data_tests:
+          - accepted_values:
+              values: ['FOR_SALE']
+  - name: int_zillow_for_rent
+    description: "Cleaned and structured for-rent listings."
+    columns:
+      - name: status_type
+        data_tests:
+          - accepted_values:
+              values: ['FOR_RENT']

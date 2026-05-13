@@ -1,0 +1,7 @@
+version 2:
+
+models:
+  - name: stg_zillow_for_sale
+    description: "Staged and deduplicated for sale listings."
+  - name: stg_zillow_for_rent
+    description: "Staged and deduplicated for rent listings."
