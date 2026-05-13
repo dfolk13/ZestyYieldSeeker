@@ -107,7 +107,7 @@ RapidAPI App Key
 Rename this file like you would an other file. Simply remove the `.example` part and save the name as `.env`.
 
 #### Update the `.env` file
-In the .env file is where you will enter in the credentials from Snowflake and RapidAPI. Leave the variables (RAPIDAPI_KEY, SNOWFLAKE_USER, SNOWFLAKE_PASSWORD, SNOWFLAKE_ACCOUNT, etc.) alone but replace the string (information between the quotation marks) with your own information. Please see screenshots for more details about what this information might look like.
+In the .env file is where you will enter in the credentials from Snowflake and RapidAPI. Leave the variables (RAPIDAPI_KEY, SNOWFLAKE_USER, SNOWFLAKE_PASSWORD, SNOWFLAKE_ACCOUNT, etc.) alone but replace the string (information between the quotation marks) with your own information. Please see [screenshots](https://github.com/dfolk13/ZestyYieldSeeker/blob/main/README.md#screenshots) for more details about what this information might look like.
 
 ### 3. Run `pip install -r requirements.txt`
 
