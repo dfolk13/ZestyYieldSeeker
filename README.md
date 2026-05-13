@@ -31,12 +31,12 @@ fetch_zillow.py → RAW_LISTINGS → dbt snapshot → dbt run → investment_yie
 - Price-to-rent ratio by zipcode
 
 ## Setup
-1. Create Snowflake and RapidAPI accounts
-2. Rename and update the `.env.example` to `.env` file with Snowflake and RapidAPI credentials
-3. Run `pip install -r requirements.txt`
-4. Run `python fetch_zillow.py`
-5. Run `python bulk_ingestion2.py`
-6. Run `dbt snapshot && dbt run && dbt test`
+1. [Create Snowflake and RapidAPI accounts](#1-create-snowflake-and-rapidapi-accounts)
+2. [Rename and update the `.env.example` to `.env` file with Snowflake and RapidAPI credentials](#2-rename-and-update-the-envexample-to-env-file-with-snowflake-and-rapidapi-credentials)
+3. [Run `pip install -r requirements.txt`](#3-run-pip-install--r-requirementstxt)
+4. [Run `python fetch_zillow.py`](#4-run-python-fetch_zillowpy)
+5. [Run `python bulk_ingestion2.py`](#5-run-python-bulk_ingestion2py)
+6. [Run `dbt snapshot && dbt run && dbt test`](#6-run-dbt-snapshot--dbt-run--dbt-test)
 
 ### 1. Create Snowflake and RapidAPI accounts
 
@@ -107,7 +107,7 @@ RapidAPI App Key
 Rename this file like you would an other file. Simply remove the `.example` part and save the name as `.env`.
 
 #### Update the `.env` file
-In the .env file is where you will enter in the credentials from Snowflake and RapidAPI. Leave the variables (RAPIDAPI_KEY, SNOWFLAKE_USER, SNOWFLAKE_PASSWORD, SNOWFLAKE_ACCOUNT, etc.) alone but replace the string (information between the quotation marks) with your own information. Please see [screenshots](https://github.com/dfolk13/ZestyYieldSeeker/blob/main/README.md#screenshots) for more details about what this information might look like.
+In the .env file is where you will enter in the credentials from Snowflake and RapidAPI. Leave the variables (RAPIDAPI_KEY, SNOWFLAKE_USER, SNOWFLAKE_PASSWORD, SNOWFLAKE_ACCOUNT, etc.) alone but replace the string (information between the quotation marks) with your own information. Please see [screenshots](#screenshots) for more details about what this information might look like.
 
 ### 3. Run `pip install -r requirements.txt`
 
