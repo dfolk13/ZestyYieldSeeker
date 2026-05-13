@@ -38,9 +38,6 @@ fetch_zillow.py → RAW_LISTINGS → dbt snapshot → dbt run → investment_yie
 5. Run `python bulk_ingestion2.py`
 6. Run `dbt snapshot && dbt run && dbt test`
 
-## Automated Pipeline
-GitHub Actions runs the full pipeline daily at 6am UTC.
-
 ### 1. Create Snowflake and RapidAPI accounts
 
 #### Creating a free trial Snowflake account
@@ -51,10 +48,9 @@ https://signup.snowflake.com/
 
 Fill all the required details. You must have an active email account to receive activation email.
 
-- Enter in account information (see screenshots)
+- Enter in account information (see screenshots below)
 - Fill out their questionaire
 - Check email for account activation
-- Password should include “Your password must be 14 - 256 characters and contain at least 1 number(s), 0 special character(s), 1 uppercase and 1 lowercase letter(s).” (HINT: best to avoid special characters like **`@, #, $, : , /`** as it could break the connection)
 - Credentials: Account → Account Details
 
 #### Creating a free trial RapidAPI account
@@ -65,11 +61,45 @@ https://rapidapi.com/auth/sign-up
 
 Fill all the required details. You must have an active email account to receive activation email.
 
-- Create an account with the above link
+- Create an account with the above link (see screenshots below)
 - Verify the account activation email
 - The API endpoint used is https://rapidapi.com/letsscrape/api/real-estate-zillow-com
 - “Subscribe to Test” → Basic (125 requests per month) → Subscribe
 - Find API Key under Console → Applications → default-application → [Authorization Keys](https://rapidapi.com/console/11930884/applications/8760224/authorizations)
+
+#### Screenshots
+
+**Snowflake**
+
+Snowflake Account Creation
+![Snowflake Account Creation](Assets/RapidAPI%20Account%20Creation.png)
+
+Snowflake Cloud Provider
+![Snowflake Cloud Provider](Assets/Snowflake%20Cloud%20Provider.png)
+
+Snowflake Dashboard
+![Snowflake Dashboard](Assets/Snowflake%20Dashboard.png)
+
+Snowflake Account
+![Snowflake Account](Assets/Snowflake%20Account.png)
+
+Snowflake Account Details
+![Snowflake Account Details](Assets/Snowflake%20Account%20Details.png)
+
+**RapidAPI**
+
+RapidAPI Account Creation
+![RapidAPI Account Creation](Assets/RapidAPI%20Account%20Creation.png)
+
+RapidAPI Key
+![RapidAPI Key](Assets/RapidAPI%20Key.png)
+
+RapidAPI Application
+![RapidAPI Application](Assets/RapidAPI%20Applications.png)
+
+RapidAPI App Key
+![RapidAPI App Key](Assets/RapidAPI%20App%20Key.png)
+
 
 ### 2. Add a `.env` file with Snowflake and RapidAPI credentials
 
@@ -80,3 +110,6 @@ Fill all the required details. You must have an active email account to receive 
 ### 5. Run `python bulk_ingestion2.py`
 
 ### 6. Run `dbt snapshot && dbt run && dbt test`
+
+## Automated Pipeline
+GitHub Actions runs the full pipeline daily at 6am UTC.
