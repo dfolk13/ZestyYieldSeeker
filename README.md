@@ -63,7 +63,7 @@ Fill all the required details. You must have an active email account to receive 
 
 - Create an account with the above link (see screenshots below)
 - Verify the account activation email
-- The API endpoint used is https://rapidapi.com/letsscrape/api/real-estate-zillow-com
+- The API endpoint used is [Real Estate Zillow.com](https://rapidapi.com/letsscrape/api/real-estate-zillow-com)
 - “Subscribe to Test” → Basic (125 requests per month) → Subscribe
 - Find API Key under Console → Applications → default-application → [Authorization Keys](https://rapidapi.com/console/11930884/applications/8760224/authorizations)
 
