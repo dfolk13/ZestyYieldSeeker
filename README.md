@@ -37,6 +37,8 @@ fetch_zillow.py → RAW_LISTINGS → dbt snapshot → dbt run → investment_yie
 4. [Run `python fetch_zillow.py`](#4-run-python-fetch_zillowpy)
 5. [Run `python bulk_ingestion2.py`](#5-run-python-bulk_ingestion2py)
 6. [Run `dbt snapshot && dbt run && dbt test`](#6-run-dbt-snapshot--dbt-run--dbt-test)
+7. [Add GitHub Secrets](#7-add-github-secrets)
+8. [Rename `.github.example` to `.github` and commit changes to run pipeline on a set schedule](#8-rename-githubexample-to-github-and-commit-changes-to-run-pipeline-on-a-set-schedule)
 
 ### 1. Create Snowflake and RapidAPI accounts
 
@@ -119,3 +121,7 @@ In the .env file is where you will enter in the credentials from Snowflake and R
 
 ## Automated Pipeline
 GitHub Actions runs the full pipeline daily at 6am UTC.
+
+### 7. Add GitHub Secrets
+
+### 8. Rename `.github.example` to `.github` and commit changes to run pipeline on a set schedule
