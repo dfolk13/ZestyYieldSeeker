@@ -35,7 +35,7 @@ fetch_zillow.py → RAW_LISTINGS → dbt snapshot → dbt run → investment_yie
 2. [Rename and update the `.env.example` to `.env` file with Snowflake and RapidAPI credentials](#2-rename-and-update-the-envexample-to-env-file-with-snowflake-and-rapidapi-credentials)
 3. [Run `pip install -r requirements.txt`](#3-run-pip-install--r-requirementstxt)
 4. [Run `python fetch_zillow.py`](#4-run-python-fetch_zillowpy)
-5. [Run `python bulk_ingestion2.py`](#5-run-python-bulk_ingestion2py)
+5. [Run `python bulk_ingestion.py`](#5-run-python-bulk_ingestionpy)
 6. [Run `dbt snapshot && dbt run && dbt test`](#6-run-dbt-snapshot--dbt-run--dbt-test)
 7. [Add GitHub Secrets](#7-add-github-secrets)
 8. [Rename `.github.example` to `.github` and commit changes to run pipeline on a set schedule](#8-rename-githubexample-to-github-and-commit-changes-to-run-pipeline-on-a-set-schedule)
@@ -115,7 +115,7 @@ In the .env file is where you will enter in the credentials from Snowflake and R
 
 ### 4. Run `python fetch_zillow.py`
 
-### 5. Run `python bulk_ingestion2.py`
+### 5. Run `python bulk_ingestion.py`
 
 ### 6. Run `dbt snapshot && dbt run && dbt test`
 
