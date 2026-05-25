@@ -3,3 +3,6 @@ dbt-snowflake
 pandas
 python-dotenv
 requests
+matplotlib
+seaborn
+plotly
