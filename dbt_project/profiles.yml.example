@@ -1,0 +1,14 @@
+# Copy this to ~/.dbt/profiles.yml and fill in your credentials
+zillow_snowflake_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "your-account-identifier"
+      user: "your-username"
+      password: "your-password"
+      role: ACCOUNTADMIN
+      database: ZILLOW_YIELD_DB
+      warehouse: COMPUTE_WH
+      schema: RAW_DATA
+      threads: 1
