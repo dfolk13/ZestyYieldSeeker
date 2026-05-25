@@ -74,7 +74,7 @@ Fill all the required details. You must have an active email account to receive 
 **Snowflake**
 
 Snowflake Account Creation
-![Snowflake Account Creation](Assets/RapidAPI%20Account%20Creation.png)
+![Snowflake Account Creation](Assets/Snowflake%20Account%20Creation.png)
 
 Snowflake Cloud Provider
 ![Snowflake Cloud Provider](Assets/Snowflake%20Cloud%20Provider.png)
